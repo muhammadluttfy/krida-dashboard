@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { Form } from '@inertiajs/vue3';
+import { computed } from 'vue';
+import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import InputError from '@/components/InputError.vue';
 import type { ItemDialogMode, ItemRecord } from '@/types/master-file';
 
 const props = defineProps<{
@@ -26,14 +26,26 @@ const formKey = computed(
         `${props.mode}-${props.record?.id ?? 'new'}-${props.nextCode}-${props.open ? 'open' : 'closed'}`,
 );
 const title = computed(() => {
-    if (props.mode === 'edit') return 'Edit Item';
-    if (props.mode === 'view') return 'Detail Item';
+    if (props.mode === 'edit') {
+return 'Edit Item';
+}
+
+    if (props.mode === 'view') {
+return 'Detail Item';
+}
+
     return 'Add Item';
 });
 
 const description = computed(() => {
-    if (props.mode === 'edit') return 'Perbarui data item yang sudah dipilih.';
-    if (props.mode === 'view') return 'Lihat detail item terdaftar.';
+    if (props.mode === 'edit') {
+return 'Perbarui data item yang sudah dipilih.';
+}
+
+    if (props.mode === 'view') {
+return 'Lihat detail item terdaftar.';
+}
+
     return 'Lengkapi data item baru yang akan disimpan.';
 });
 

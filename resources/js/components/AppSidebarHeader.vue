@@ -2,7 +2,6 @@
 import { usePage } from '@inertiajs/vue3';
 import { Bell } from 'lucide-vue-next';
 import { computed } from 'vue';
-import UserMenuContent from '@/components/UserMenuContent.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -12,6 +11,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SidebarTrigger } from '@/components/ui/sidebar';
+import UserMenuContent from '@/components/UserMenuContent.vue';
 import { getInitials } from '@/composables/useInitials';
 import type { BreadcrumbItem } from '@/types';
 

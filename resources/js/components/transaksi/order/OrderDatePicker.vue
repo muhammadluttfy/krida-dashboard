@@ -1,13 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
 import { CalendarDate, parseDate } from '@internationalized/date';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-vue-next';
-import { Button } from '@/components/ui/button';
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from '@/components/ui/popover';
 import {
     CalendarCell,
     CalendarCellTrigger,
@@ -22,6 +15,13 @@ import {
     CalendarPrev,
     CalendarRoot,
 } from 'reka-ui';
+import { computed, ref } from 'vue';
+import { Button } from '@/components/ui/button';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/components/ui/popover';
 
 const props = defineProps<{
     modelValue: string;

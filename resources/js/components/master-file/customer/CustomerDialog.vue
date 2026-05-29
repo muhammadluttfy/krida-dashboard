@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { Form } from '@inertiajs/vue3';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { computed, ref, watch } from 'vue';
+import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import InputError from '@/components/InputError.vue';
 import type { CustomerDialogMode, CustomerRecord } from '@/types/master-file';
 
 const props = defineProps<{
@@ -26,19 +26,43 @@ const formKey = computed(
         `${props.mode}-${props.record?.id ?? 'new'}-${props.nextCode}-${props.open ? 'open' : 'closed'}`,
 );
 const title = computed(() => {
-    if (props.mode === 'edit') return 'Edit Customer';
-    if (props.mode === 'view') return 'Detail Customer';
+    if (props.mode === 'edit') {
+        return 'Edit Customer';
+    }
+
+    if (props.mode === 'view') {
+        return 'Detail Customer';
+    }
+
     return 'Add Customer';
 });
 
 const description = computed(() => {
-    if (props.mode === 'edit') return 'Perbarui data customer yang sudah dipilih.';
-    if (props.mode === 'view') return 'Lihat detail customer terdaftar.';
+    if (props.mode === 'edit') {
+        return 'Perbarui data customer yang sudah dipilih.';
+    }
+
+    if (props.mode === 'view') {
+        return 'Lihat detail customer terdaftar.';
+    }
+
     return 'Lengkapi data customer baru yang akan disimpan.';
 });
 
 const customerCode = computed(
     () => (props.record?.customer_code ?? props.nextCode),
+);
+
+const address = ref(props.record?.address ?? '');
+
+watch(
+    () => [props.open, props.mode, props.record?.id],
+    () => {
+        if (props.open) {
+            address.value = props.record?.address ?? '';
+        }
+    },
+    { immediate: true },
 );
 
 const submitAction = computed(() => {
@@ -106,10 +130,11 @@ const submitMethod = computed(() => (props.mode === 'edit' ? 'put' : 'post'));
                             id="address"
                             name="address"
                             :disabled="isReadOnly"
+                            v-model="address"
                             rows="4"
                             placeholder="Jl. Merdeka No. 10, Jakarta Pusat"
                             class="min-h-28 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-red-300 focus:ring-2 focus:ring-red-200 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500"
-                        >{{ record?.address ?? '' }}</textarea>
+                        ></textarea>
                         <InputError :message="errors.address" />
                     </div>
 
@@ -137,6 +162,7 @@ const submitMethod = computed(() => (props.mode === 'edit' ? 'put' : 'post'));
                             () => {
                                 clearErrors();
                                 reset();
+                                address = props.record?.address ?? '';
                                 emit('update:open', false);
                             }
                         "

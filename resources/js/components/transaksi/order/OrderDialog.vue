@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { Info, Plus, Trash2 } from 'lucide-vue-next';
+import { computed, watch } from 'vue';
+import InputError from '@/components/InputError.vue';
+import OrderDatePicker from '@/components/transaksi/order/OrderDatePicker.vue';
+import OrderItemCombobox from '@/components/transaksi/order/OrderItemCombobox.vue';
 import { Button } from '@/components/ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Textarea } from '@/components/ui/textarea';
 import {
     Dialog,
     DialogContent,
@@ -15,10 +16,8 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import InputError from '@/components/InputError.vue';
-import OrderCustomerCombobox from '@/components/transaksi/order/OrderCustomerCombobox.vue';
-import OrderDatePicker from '@/components/transaksi/order/OrderDatePicker.vue';
-import OrderItemCombobox from '@/components/transaksi/order/OrderItemCombobox.vue';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Textarea } from '@/components/ui/textarea';
 import type {
     OrderDialogMode,
     OrderFormLine,
@@ -27,6 +26,7 @@ import type {
     OrderOptionItem,
     OrderRecord,
 } from '@/types/transaksi';
+import OrderCustomerCombobox from '@/components/transaksi/order/OrderCustomerCombobox.vue';
 
 const props = defineProps<{
     open: boolean;
@@ -49,14 +49,26 @@ const formKey = computed(
 );
 
 const title = computed(() => {
-    if (props.mode === 'edit') return 'Edit Order';
-    if (props.mode === 'view') return 'Detail Order!';
+    if (props.mode === 'edit') {
+        return 'Edit Order';
+    }
+
+    if (props.mode === 'view') {
+        return 'Detail Order!';
+    }
+
     return 'Add Order';
 });
 
 const description = computed(() => {
-    if (props.mode === 'edit') return 'Perbarui transaksi order beserta detail itemnya.';
-    if (props.mode === 'view') return 'Lihat detail transaksi order yang tersimpan!';
+    if (props.mode === 'edit') {
+        return 'Perbarui transaksi order beserta detail itemnya.';
+    }
+
+    if (props.mode === 'view') {
+        return 'Lihat detail transaksi order yang tersimpan!';
+    }
+
     return 'Lengkapi header order dan item transaksi baru.';
 });
 
@@ -89,6 +101,7 @@ const parseNumber = (value: string | number | null | undefined): number => {
 
     if (typeof value === 'string') {
         const cleaned = value.replace(/[^\d.-]/g, '');
+
         return cleaned === '' ? 0 : Number(cleaned);
     }
 
@@ -206,6 +219,7 @@ const removeLine = (index: number) => {
 
 const handleItemChange = (index: number, itemId: string) => {
     const line = form.items[index];
+
     if (!line) {
         return;
     }
@@ -216,6 +230,7 @@ const handleItemChange = (index: number, itemId: string) => {
 
     if (!selected) {
         line.unit_price = '0';
+
         return;
     }
 
@@ -234,6 +249,7 @@ const submit = () => {
 
     if (props.mode === 'edit' && props.record) {
         form.put(`/transaksi/order/${props.record.id}`, options);
+
         return;
     }
 
@@ -260,7 +276,7 @@ const rowError = (index: number, field: keyof OrderFormLine) =>
                     </DialogDescription>
                 </DialogHeader>
 
-                <section class="space-y-4 rounded-[24px] border border-slate-200 bg-slate-50/60 p-5">
+                <section class="space-y-4 rounded-3xl border border-slate-200 bg-slate-50/60 p-5">
                     <div class="grid gap-5 lg:grid-cols-3">
                         <div class="grid gap-2">
                             <Label for="order_number">Nomor Order</Label>
@@ -295,7 +311,7 @@ const rowError = (index: number, field: keyof OrderFormLine) =>
                     </div>
                 </section>
 
-                <section class="min-w-0 space-y-4 rounded-[24px] border border-slate-200 bg-white p-5 shadow-sm">
+                <section class="min-w-0 space-y-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
                     <div class="flex items-center justify-between gap-4">
                         <div>
                             <h3 class="text-lg font-semibold text-slate-950">
@@ -309,7 +325,7 @@ const rowError = (index: number, field: keyof OrderFormLine) =>
                         <Button
                             v-if="!isReadOnly"
                             type="button"
-                            class="h-11 rounded-2xl bg-gradient-to-r from-red-600 to-red-500 px-5 font-semibold text-white shadow-[0_12px_28px_rgba(239,68,68,0.22)] transition hover:from-red-500 hover:to-red-600"
+                            class="h-11 rounded-2xl bg-linear-to-r from-red-600 to-red-500 px-5 font-semibold text-white shadow-[0_12px_28px_rgba(239,68,68,0.22)] transition hover:from-red-500 hover:to-red-600"
                             @click="addLine"
                         >
                             <Plus class="size-4" />
@@ -318,15 +334,15 @@ const rowError = (index: number, field: keyof OrderFormLine) =>
                     </div>
 
                     <div class="min-w-0 overflow-x-auto">
-                        <table class="min-w-[1600px] w-full border-collapse">
+                        <table class="min-w-400 w-full border-collapse">
                             <colgroup>
-                                <col class="w-[340px]" />
-                                <col class="w-[110px]" />
-                                <col class="w-[190px]" />
-                                <col class="w-[170px]" />
-                                <col class="w-[190px]" />
-                                <col class="w-[190px]" />
-                                <col class="w-[100px]" />
+                                <col class="w-85" />
+                                <col class="w-27.5" />
+                                <col class="w-47.5" />
+                                <col class="w-42.5" />
+                                <col class="w-47.5" />
+                                <col class="w-47.5" />
+                                <col class="w-25" />
                             </colgroup>
                             <thead class="bg-slate-50/80 text-left">
                                 <tr class="text-sm font-semibold text-slate-700">
@@ -420,7 +436,7 @@ const rowError = (index: number, field: keyof OrderFormLine) =>
                                                     v-model="row.description"
                                                     :readonly="isReadOnly"
                                                     placeholder="Tambahkan detail pesanan, permintaan khusus, atau catatan untuk item ini..."
-                                                    class="min-h-[96px] rounded-2xl border-slate-200 bg-white px-4 py-3 shadow-sm focus-visible:border-red-300 focus-visible:ring-red-200"
+                                                    class="min-h-24 rounded-2xl border-slate-200 bg-white px-4 py-3 shadow-sm focus-visible:border-red-300 focus-visible:ring-red-200"
                                                 />
                                                 <InputError :message="rowError(index, 'description')" />
                                             </div>
@@ -433,7 +449,7 @@ const rowError = (index: number, field: keyof OrderFormLine) =>
                 </section>
 
                 <section class="flex min-w-0 justify-end">
-                    <aside class="w-full rounded-[24px] border border-slate-200 bg-slate-50/70 p-5 lg:sticky lg:top-5 lg:max-w-[460px]">
+                    <aside class="w-full rounded-3xl border border-slate-200 bg-slate-50/70 p-5 lg:sticky lg:top-5 lg:max-w-115">
                         <div class="flex items-start justify-between gap-3">
                             <div>
                                 <h3 class="text-lg font-semibold text-slate-950">
@@ -537,7 +553,7 @@ const rowError = (index: number, field: keyof OrderFormLine) =>
                     <Button
                         v-if="!isReadOnly"
                         type="submit"
-                        class="h-11 rounded-2xl bg-gradient-to-r from-red-600 to-red-500 px-5 font-semibold text-white shadow-[0_12px_28px_rgba(239,68,68,0.22)] transition hover:from-red-500 hover:to-red-600"
+                        class="h-11 rounded-2xl bg-linear-to-r from-red-600 to-red-500 px-5 font-semibold text-white shadow-[0_12px_28px_rgba(239,68,68,0.22)] transition hover:from-red-500 hover:to-red-600"
                         :disabled="form.processing"
                     >
                         {{ isCreate ? 'Simpan Data' : 'Update Data' }}
