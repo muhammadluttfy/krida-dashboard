@@ -14,3 +14,18 @@ export type CustomerFormValues = {
 };
 
 export type CustomerDialogMode = 'create' | 'edit' | 'view';
+
+export type ItemRecord = {
+    id: number;
+    item_code: string;
+    description: string;
+    price: string | number;
+};
+
+export type ItemFormValues = {
+    item_code: string;
+    description: string;
+    price: string;
+};
+
+export type ItemDialogMode = 'create' | 'edit' | 'view';

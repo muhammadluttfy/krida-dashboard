@@ -93,7 +93,10 @@ const transactionOpen = computed(() =>
         </SidebarHeader>
 
         <SidebarContent class="min-h-0 gap-4 overflow-y-auto px-1 pb-3">
-            <SidebarGroup>
+            <SidebarGroup class="gap-2">
+                <SidebarGroupLabel class="px-3 text-xs font-semibold tracking-[0.16em] uppercase text-slate-500">
+                    Menu
+                </SidebarGroupLabel>
                 <SidebarGroupContent>
                     <SidebarMenu>
                         <SidebarMenuItem v-for="item in mainNavItems" :key="item.title">

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MasterFile\CustomerController;
+use App\Http\Controllers\MasterFile\ItemController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 
@@ -14,9 +15,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('master-file/customers/{customer}', [CustomerController::class, 'update'])->name('master-file.customers.update');
     Route::delete('master-file/customers/{customer}', [CustomerController::class, 'destroy'])->name('master-file.customers.destroy');
 
-    Route::get('master-file/items', fn () => inertia('master-file/Item', [
-        'pageSubtitle' => 'Master File',
-    ]))->name('master-file.items');
+    Route::get('master-file/items', [ItemController::class, 'index'])->name('master-file.items');
+    Route::post('master-file/items', [ItemController::class, 'store'])->name('master-file.items.store');
+    Route::put('master-file/items/{item}', [ItemController::class, 'update'])->name('master-file.items.update');
+    Route::delete('master-file/items/{item}', [ItemController::class, 'destroy'])->name('master-file.items.destroy');
 
     Route::get('transaksi/order', fn () => inertia('transaksi/Order', [
         'pageSubtitle' => 'Transaksi',

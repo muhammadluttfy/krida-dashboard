@@ -43,7 +43,7 @@ defineOptions({
                 href: '/master-file/customers',
             },
         ],
-        pageSubtitle: '',
+        pageSubtitle: 'Kelola data customer',
     },
 });
 

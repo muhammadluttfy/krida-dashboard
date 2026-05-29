@@ -29,6 +29,7 @@ const user = computed(() => page.props.auth.user);
 const title = computed(
     () => props.breadcrumbs[props.breadcrumbs.length - 1]?.title ?? 'Dashboard',
 );
+const subtitle = computed(() => String(page.props.pageSubtitle ?? ''));
 </script>
 
 <template>
@@ -43,6 +44,9 @@ const title = computed(
                 <h1 class="text-xl font-semibold tracking-tight text-slate-950">
                     {{ title }}
                 </h1>
+                <p v-if="subtitle" class="truncate text-sm text-slate-500">
+                    {{ subtitle }}
+                </p>
                 <Breadcrumbs
                     v-if="breadcrumbs && breadcrumbs.length > 1"
                     class="mt-1"
