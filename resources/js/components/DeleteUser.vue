@@ -54,7 +54,7 @@ const passwordInput = useTemplateRef('passwordInput');
                         class="space-y-6"
                         v-slot="{ errors, processing, reset, clearErrors }"
                     >
-                        <DialogHeader class="space-y-3">
+                        <DialogHeader class="space-y-1.5">
                             <DialogTitle
                                 >Are you sure you want to delete your
                                 account?</DialogTitle

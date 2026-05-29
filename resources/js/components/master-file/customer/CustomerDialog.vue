@@ -67,7 +67,7 @@ const submitMethod = computed(() => (props.mode === 'edit' ? 'put' : 'post'));
                 v-slot="{ errors, processing, reset, clearErrors }"
                 @success="emit('update:open', false)"
             >
-                <DialogHeader class="space-y-3">
+                <DialogHeader class="space-y-1.5">
                     <DialogTitle class="text-2xl">{{ title }}</DialogTitle>
                     <DialogDescription>{{ description }}</DialogDescription>
                 </DialogHeader>

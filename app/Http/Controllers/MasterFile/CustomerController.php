@@ -41,6 +41,27 @@ class CustomerController extends Controller
         ]);
     }
 
+    public function search(Request $request)
+    {
+        $search = $request->string('search')->trim()->toString();
+
+        $customers = Customer::query()
+            ->when($search !== '', function ($query) use ($search): void {
+                $query->where(function ($builder) use ($search): void {
+                    $builder
+                        ->where('customer_code', 'like', "%{$search}%")
+                        ->orWhere('full_name', 'like', "%{$search}%")
+                        ->orWhere('address', 'like', "%{$search}%")
+                        ->orWhere('phone_number', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('full_name')
+            ->limit(20)
+            ->get(['id', 'customer_code', 'full_name']);
+
+        return response()->json($customers);
+    }
+
     public function store(CustomerStoreRequest $request): RedirectResponse
     {
         Customer::create([
